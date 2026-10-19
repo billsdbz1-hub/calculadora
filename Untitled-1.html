@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculator {
+            background: #222;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 280px;
+        }
+        .display {
+            background-color: #a4c639;
+            color: #000;
+            font-size: 32px;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: right;
+            padding: 15px 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+            min-height: 40px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 18px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #444;
+            color: white;
+            transition: background-color 0.1s;
+        }
+        button:active {
+            background-color: #666;
+        }
+        button.operator {
+            background-color: #ff9500;
+            color: white;
+        }
+        button.operator:active {
+            background-color: #cc7700;
+        }
+        button.clear {
+            background-color: #a5a5a5;
+            color: black;
+        }
+        button.clear:active {
+            background-color: #888;
+        }
+        button.equal {
+            background-color: #28a745;
+            color: white;
+            grid-column: span 4;
+        }
+        button.equal:active {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        
+        <div class="buttons">
+            <button class="clear" onclick="limpar()">C</button>
+            <button class="operator" onclick="inserirOperador('+')">+</button>
+            <button class="operator" onclick="inserirOperador('-')">-</button>
+            <button class="operator" onclick="apagar()">⌫</button>
+
+            <button onclick="inserirNumero('7')">7</button>
+            <button onclick="inserirNumero('8')">8</button>
+            <button onclick="inserirNumero('9')">9</button>
+            <button onclick="inserirNumero('4')">4</button>
+
+            <button onclick="inserirNumero('5')">5</button>
+            <button onclick="inserirNumero('6')">6</button>
+            <button onclick="inserirNumero('1')">1</button>
+            <button onclick="inserirNumero('2')">2</button>
+
+            <button onclick="inserirNumero('3')">3</button>
+            <button onclick="inserirNumero('0')">0</button>
+            <button onclick="inserirNumero('.')">.</button>
+            <button class="operator" onclick="inserirOperador('*')">×</button>
+
+            <button class="equal" onclick="calcular()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let expressao = '';
+
+        function atualizarDisplay() {
+            const display = document.getElementById('display');
+            display.innerText = expressao || '0';
+        }
+
+        function inserirNumero(num) {
+            expressao += num;
+            atualizarDisplay();
+        }
+
+        function inserirOperador(op) {
+            if (expressao === '' && op === '-') {
+                expressao = '-';
+                atualizarDisplay();
+                return;
+            }
+            if (expressao === '' || ['+', '-', '*'].includes(expressao.slice(-1))) return;
+            expressao += op;
+            atualizarDisplay();
+        }
+
+        function limpar() {
+            expressao = '';
+            atualizarDisplay();
+        }
+
+        function apagar() {
+            expressao = expressao.slice(0, -1);
+            atualizarDisplay();
+        }
+
+        function calcular() {
+            try {
+                if (expressao === '') return;
+                let resultado = eval(expressao);
+                expressao = String(resultado);
+                atualizarDisplay();
+            } catch (e) {
+                document.getElementById('display').innerText = 'Erro';
+                expressao = '';
+            }
+        }
+    </script>
+
+</body>
+</html>
